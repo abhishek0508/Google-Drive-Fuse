@@ -1,0 +1,17 @@
+FUSE -  File System in users -  A library to create in python or in c++,c
+can create different types of file system, - SSHFS,gitFS,GoogleDriveFileSyste,mySQLFS,fuse-zip,rarfs,gmailFS,ntfs-3g and many more
+architecture of fuse - diagram how they interext with kernel,
+https://www.youtube.com/watch?v=C2FuPxyip2A&t=689s - video for understanding
+practise code up for simple dirctory structure
+create runnable code,
+list commands to execute
+list system calls used in these,
+
+does this supports asynchrnous i/o?
+yes, it supports in c.. python also does as this is binding to c
+
+does this have any limit??
+no it doesn't have, however it has for i/o block size whic can be made upto 32KB.
+
+
+goto the folder where 
