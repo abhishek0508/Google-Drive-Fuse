@@ -89,7 +89,7 @@ class Passthrough(Operations):
 			pass
 
 		# #logger.error "1"
-		try:	
+		try:
 			results = service.files().list(q="'"+parentid+"' in parents",pageSize=100, fields="files(id, name, mimeType)").execute()
 			items = results.get('files', [])
 			# #logger.error "2"
@@ -102,9 +102,9 @@ class Passthrough(Operations):
 						# logger.error ("Name : ",item['name'],"\nId : ",item['id'],"\n")
 						Dict[item['id']]=90
 						if item['mimeType']=="application/vnd.google-apps.folder":
-							os.mkdir(full_path+"/"+item['name']) 
+							os.mkdir(full_path+"/"+item['name'])
 						else:
-							os.mknod(full_path+"/"+item['name']) 
+							os.mknod(full_path+"/"+item['name'])
 					except:
 						pass
 
@@ -117,8 +117,8 @@ class Passthrough(Operations):
 		full_path = self._full_path(path)
 
 		logger.error ("access called : "+str(full_path)+" "+str(mode))
-		
-	
+
+
 		if not os.access(full_path, mode):
 			raise FuseOSError(errno.EACCES)
 
@@ -140,14 +140,14 @@ class Passthrough(Operations):
 					 'st_gid', 'st_mode', 'st_mtime', 'st_nlink', 'st_size', 'st_uid'))
 
 	def readdir(self, path, fh):
-		
+
 		full_path = self._full_path(path)
 		logger.error ("readir : "+str(full_path))
 
 		if(full_path!=".backend/"):
 			#logger.error "Here"
 			try:
-				req_id=self.getidfrompath(full_path)		
+				req_id=self.getidfrompath(full_path)
 			except Exception as e:
 				logger.error ("readdir : "+str(e))
 
@@ -188,14 +188,14 @@ class Passthrough(Operations):
 	def mkdir(self, path, mode):
 		logger.error ("mkdir called : "+str(path))
 		global service
-		
+
 		full_path = self._full_path(path)
 		full_path=full_path.rstrip('/')
 		fp=full_path.split("/")
-		
+
 		fplen=len(fp)
 		filename=fp[fplen-1]
-		
+
 		temppath=""
 		for i in range(0,fplen-1):
 			temppath=temppath+fp[i]+"/"
@@ -253,10 +253,10 @@ class Passthrough(Operations):
 		parent = new_path[:y]
 		old_parent = old_path[:x]
 		#logger.error "parent ::  ",parent
-		
+
 		if('.Trash-' in new):
 			#logger.error "Deletion Called"
-			try:	
+			try:
 				#type(recordtomodify)
 				full_path = self._full_path(old)
 				file_id = self.getidfrompath(full_path)
@@ -275,7 +275,7 @@ class Passthrough(Operations):
 				parent_id = self.getidfrompath(parent)
 				old_parent_id = self.getidfrompath(old_parent)
 				updated_file = service.files().update(fileId=str(file_id), addParents=str(parent_id), removeParents=str(old_parent_id)).execute()
-				
+
 				#logger.error "moved..."
 			except Exception as e:
 				logger.error (e)
@@ -301,9 +301,9 @@ class Passthrough(Operations):
 			return os.rename(str(old_path), str(new_path))
 		else:
 			#new = new[1::]
-			
+
 			try:
-				
+
 				file_id = self.getidfrompath(old_path)
 				file_id = str(file_id)
 				file = service.files().get(fileId=file_id).execute()
@@ -317,7 +317,7 @@ class Passthrough(Operations):
 				logger.error ('An error occurred: s')
 
 			#logger.error "44"
-			
+
 			return os.rename(str(old_path), str(new_path))
 
 	def link(self, target, name):
@@ -331,10 +331,10 @@ class Passthrough(Operations):
 		full_path=full_path.rstrip('/')
 		full_path=full_path.replace('Google Drive','.backend')
 		fp=full_path.split("/")
-		
+
 		fplen=len(fp)
 		filename=fp[fplen-1]
-		
+
 		temppath=""
 		for i in range(0,fplen-1):
 			temppath=temppath+fp[i]+"/"
@@ -428,7 +428,7 @@ class Passthrough(Operations):
 	def destroy(self,data=None):
 		logger.error("destroy called")
 		shutil.rmtree(".backend")
-		return	
+		return
 
 	def fsync(self, path, fdatasync, fh):
 		logger.error ("fsync called : "+str(path))
@@ -438,7 +438,7 @@ class Passthrough(Operations):
 					global service
 					full_path = self._full_path(path)
 					if ".goutputstream" in path:
-    				         return self.flush(path, fh)	
+    				         return self.flush(path, fh)
 					logger.error ("Path"+str(full_path))
 
 					file_id=self.getidfrompath(full_path)
@@ -465,7 +465,7 @@ class Passthrough(Operations):
 					# media_body=media_body).execute()
 		except Exception as e:
 			logger.error (e)
-		       
+
 		return self.flush(path, fh)
 
 	def getidfrompath(self,path):

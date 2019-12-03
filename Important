@@ -14,4 +14,25 @@ does this have any limit??
 no it doesn't have, however it has for i/o block size whic can be made upto 32KB.
 
 
-goto the folder where 
+goto the folder where gfs.py is located
+
+command to run - "python3 gfs.py mpoint/"
+questions - why getattr & access gets called three times??
+for group,user & other gid-4,uid-2,other-1
+basically it fetches files for differnt priviledged user.
+
+
+Basically its filesystem, which is intended to provide access via familiar posix calls to files which are actually
+stored behind a resftul api(like Google Drive API).The filesystem caches files once they've been retrieved for the first time
+so that they are more readily available next time.
+
+stackoverflow good questions?
+should getattr always need to serialised?
+https://stackoverflow.com/questions/18471238/should-the-fuse-getattr-operation-always-be-serialised
+
+(in short explanation - yes getattr needs to be serialised since lookup in same directory is in serial manner)
+
+see architcture of FUSE.----------------
+basically whatever we type (commands) goes into kernel space of VFS(virtual file system) , FUSE interacts with these VFS
+and then FUSE provides interface to implement its own ls or other functionalities(function in FUSE class), and then these
+functions are executed which again pass its result to FUSE which to VFS and then VFS to user.
